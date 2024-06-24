@@ -5,9 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>My Website</title>
-  <link rel="stylesheet" href="./style.css">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <title>Demo</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <!-- Make sure you put this AFTER Leaflet's CSS -->
@@ -33,12 +31,23 @@
 </style>
 
 <script>
-  var map = L.map('map').setView([51.505, -0.09], 13);
+  var map = L.map('map').setView([-23.5489, -46.6388], 6);
 
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
+
+  async function fetchAsync(url) {
+    let response = await fetch(url);
+    let data = await response.json();
+    return data;
+  }
+
+  var request = fetchAsync("https://servicodados.ibge.gov.br/api/v3/malhas/estados/SP?formato=application/vnd.geo+json");
+  request.then((malha_sp) => {
+    L.geoJSON(malha_sp).addTo(map);
+  })
 
 </script>
 
